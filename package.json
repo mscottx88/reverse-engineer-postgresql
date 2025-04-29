@@ -1,0 +1,19 @@
+{
+  "name": "reverse-engineer-postgresql",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/src/index.js",
+  "scripts": {},
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "18.15",
+    "@types/pg": "^8.11.11",
+    "@types/pg-format": "^1.0.5",
+    "pg": "^8.13.3",
+    "pg-format": "^1.0.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
