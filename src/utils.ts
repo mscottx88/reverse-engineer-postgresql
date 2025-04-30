@@ -1,6 +1,6 @@
-import pgFormat from 'pg-format';
+import * as pgFormat from 'pg-format';
 
-export default function sql(
+export function sql(
   fragments: TemplateStringsArray,
   ...args: (string | number | boolean | object | any[] | Date | null | undefined)[]
 ): string {

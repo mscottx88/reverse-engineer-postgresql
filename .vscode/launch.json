@@ -16,6 +16,31 @@
       "windows": {
         "skipFiles": ["C:\\**\\node_modules\\**\\*", "<node_internals>/**/*"]
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test e2e Spec File w/ ts-node",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runTestsByPath",
+        "${relativeFile}",
+        "--runInBand",
+        "--colors",
+        "--verbose=false",
+        "--collectCoverage=false",
+        "--testTimeout=10000000",
+        "--testPathPattern=${fileDirname}"
+      ],
+      "outputCapture": "std",
+      "internalConsoleOptions": "openOnSessionStart",
+      "envFile": "${workspaceRoot}/.env",
+      "skipFiles": ["${workspaceRoot}/../../node_modules/**/*", "<node_internals>/**/*"],
+      "windows": {
+        "skipFiles": ["C:\\**\\node_modules\\**\\*", "<node_internals>/**/*"]
+      },
+      "disableOptimisticBPs": true
     }
   ]
 }

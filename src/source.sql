@@ -1,12 +1,8 @@
-DROP SCHEMA IF EXISTS source CASCADE;
-
-CREATE SCHEMA source;
-
 SET check_function_bodies = false;
 
 SET search_path = source;
 
-CREATE FUNCTION test_table_trigger ()
+CREATE FUNCTION reports_trigger ()
   RETURNS trigger
   LANGUAGE plpgsql
     AS $BODY$
@@ -44,7 +40,7 @@ CREATE TYPE test_report_type AS ENUM (
   'event'
 );
 
-CREATE TABLE test_table (
+CREATE TABLE reports (
   id BIGSERIAL NOT NULL,
   report_owner TEXT NOT NULL,
   report_date DATE NOT NULL,
@@ -53,29 +49,34 @@ CREATE TABLE test_table (
   report_type test_report_type NOT NULL,
   report_tsvector TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', report_data)) STORED
 )
-PARTITION BY LIST (report_date);
+PARTITION BY LIST (report_type);
 
-CREATE TABLE test_table_20250422 PARTITION OF test_table (
-  CHECK (report_date = '2025-04-22'::date)
+CREATE TABLE reports_classic PARTITION OF reports (
+  CHECK (report_type = 'classic'::test_report_type)
 )
-FOR VALUES IN ('2025-04-22');
+FOR VALUES IN ('classic'::test_report_type);
 
-CREATE INDEX ON test_table USING BTREE (report_owner);
+CREATE TABLE reports_manual PARTITION OF reports (
+  CHECK (report_type = 'manual'::test_report_type)
+)
+FOR VALUES IN ('manual'::test_report_type);
 
-CREATE INDEX ON test_table USING GIN (report_parsed);
+CREATE INDEX ON reports USING BTREE (report_owner);
 
-CREATE INDEX ON test_table USING GIN (report_tsvector);
+CREATE INDEX ON reports USING GIN (report_parsed);
 
-ALTER TABLE test_table ADD PRIMARY KEY (id, report_date);
+CREATE INDEX ON reports USING GIN (report_tsvector);
 
-CREATE TRIGGER test_table_trigger
+ALTER TABLE reports ADD PRIMARY KEY (id, report_type);
+
+CREATE TRIGGER reports_trigger
   AFTER INSERT OR DELETE OR UPDATE
-  ON test_table
+  ON reports
   FOR EACH ROW
-  EXECUTE FUNCTION test_table_trigger ();
+  EXECUTE FUNCTION reports_trigger ();
 
-CREATE VIEW test_table_classic_view
+CREATE VIEW reports_classic_view
 AS
 SELECT *
-FROM test_table
+FROM reports
 WHERE report_type = 'classic'::test_report_type;

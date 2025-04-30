@@ -1,9 +1,9 @@
-import sql from './utils.js';
+import * as utils from './utils';
 
 export const PAGE_SIZE = 100 as const;
 
 export function listEnums(schema: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT
       FORMAT(
         E'CREATE TYPE %s AS ENUM (\\n%s\\n)',
@@ -27,7 +27,7 @@ export function listEnums(schema: string, offset: number = 0): string {
 }
 
 export function listFunctions(schema: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT pg_get_functiondef(PRC.oid) AS statement
     FROM pg_proc PRC
     WHERE to_regnamespace(:${schema}) = PRC.pronamespace
@@ -42,7 +42,7 @@ export const listTableConstraints = (
   table?: string,
   offset: number = 0,
 ): string => {
-  return sql`
+  return utils.sql`
     SELECT
       FORMAT(
         E'ALTER TABLE %I\\n  ADD CONSTRAINT %I\\n  %s',
@@ -75,7 +75,7 @@ export const listTableConstraints = (
 };
 
 export function listTableIndexes(schema: string, table?: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT IDX.indexdef AS statement
     FROM pg_indexes IDX
     WHERE (
@@ -97,7 +97,7 @@ export function listTableIndexes(schema: string, table?: string, offset: number 
 }
 
 export function listTablePartitions(schema: string, table?: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT
       FORMAT(
         E'CREATE TABLE %I.%I PARTITION OF %I.%I (\\n  CONSTRAINT %I %s\\n)\\n%s',
@@ -127,7 +127,7 @@ export function listTablePartitions(schema: string, table?: string, offset: numb
 }
 
 export function listTableSequences(schema: string, table?: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT
       FORMAT(
         'CREATE SEQUENCE IF NOT EXISTS %s',
@@ -151,7 +151,7 @@ export function listTableSequences(schema: string, table?: string, offset: numbe
 }
 
 export const listTables = (schema: string, table?: string, offset: number = 0): string => {
-  return sql`
+  return utils.sql`
     SELECT
       FORMAT(
         E'CREATE TABLE IF NOT EXISTS %s (\\n%s\\n)%s',
@@ -213,7 +213,7 @@ export const listTables = (schema: string, table?: string, offset: number = 0): 
 };
 
 export function listTriggers(schema: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT pg_get_triggerdef(TRG.oid) AS statement
     FROM pg_trigger TRG
     INNER JOIN pg_class CLS ON CLS.oid = TRG.tgrelid
@@ -228,7 +228,7 @@ export function listTriggers(schema: string, offset: number = 0): string {
 }
 
 export function listViews(schema: string, offset: number = 0): string {
-  return sql`
+  return utils.sql`
     SELECT
       FORMAT(
         E'CREATE OR REPLACE VIEW %I AS\\n%s',
