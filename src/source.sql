@@ -34,10 +34,7 @@ CREATE FUNCTION reports_trigger ()
 
 CREATE TYPE test_report_type AS ENUM (
   'classic',
-  'cron',
-  'manual',
-  'ad-hoc',
-  'event'
+  'manual'
 );
 
 CREATE TABLE reports (

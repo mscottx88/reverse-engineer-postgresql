@@ -24,7 +24,7 @@ router.post(
           (report_owner, report_date, report_data, report_parsed, report_type)
         VALUES
           (:${owner}, :${new Date(date)}, :${data}, :${JSON.parse(data)}, :${type})
-        RETURNING *;
+        RETURNING *
       `);
       res.status(HttpStatus.CREATED).json({ data: rows[0] });
       next();
