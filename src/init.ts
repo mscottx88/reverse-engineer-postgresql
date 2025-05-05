@@ -1,10 +1,10 @@
 /**
- * This script can be executed to reverse-engineer the source database into another.
+ * This script can be executed to initialize the source database.
  *
  * You can execute this script from the command line:
  *
  * ```sh
- * npm run reverse-engineer
+ * npm run init
  * ```
  *
  * Or interactively with the VS Code debugger using the Launch File w/ ts-node configuration.
@@ -14,7 +14,7 @@
 import * as db from './db';
 
 if (require.main === module)
-  (async () => await db.cloneInputSchema())().catch((err: any) => {
+  (async () => await db.initSourceSchema())().catch((err: any) => {
     console.error(err);
     process.exit(1);
   });

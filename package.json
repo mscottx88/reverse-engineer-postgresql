@@ -5,7 +5,9 @@
   "description": "",
   "main": "./dist/src/index.js",
   "scripts": {
-    "test": "jest"
+    "generate-queries": "node -r ts-node/register --env-file=.env ./src/generate-queries.ts",
+    "init": "node -r ts-node/register --env-file=.env ./src/init.ts",
+    "test": "node -r ts-node/register --env-file=.env ./node_modules/jest/bin/jest.js"
   },
   "author": "",
   "license": "MIT",

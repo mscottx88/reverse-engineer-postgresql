@@ -35,7 +35,10 @@ export async function cloneInputSchema(): Promise<void> {
       for (const { statement } of rows)
         statements.push(
           statement
-            .replaceAll(utils.sql`:I${process.env.INPUT_SCHEMA}`, utils.sql`:I${process.env.OUTPUT_SCHEMA}`)
+            .replaceAll(
+              utils.sql`:I${process.env.INPUT_SCHEMA}`,
+              utils.sql`:I${process.env.OUTPUT_SCHEMA}`,
+            )
             .replaceAll('\t', '  '),
         );
     }
@@ -48,6 +51,14 @@ export async function cloneInputSchema(): Promise<void> {
   } finally {
     client.release();
   }
+}
+
+export async function initSourceSchema(): Promise<void> {
+  await pool.query(utils.sql`DROP SCHEMA IF EXISTS :I${process.env.INPUT_SCHEMA} CASCADE`);
+  await pool.query(utils.sql`CREATE SCHEMA :I${process.env.INPUT_SCHEMA}`);
+  const path = `${__dirname}/source.sql`;
+  const statements: string = await fs.readFile(path, 'utf8');
+  await pool.query(statements);
 }
 
 export async function setupTestSchema(): Promise<void> {

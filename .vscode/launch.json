@@ -9,7 +9,7 @@
       "args": ["${relativeFile}"],
       "cwd": "${workspaceRoot}",
       "envFile": "${workspaceRoot}/.env",
-      "runtimeArgs": ["--loader", "ts-node/esm"],
+      "runtimeArgs": ["-r", "ts-node/register"],
       "outputCapture": "std",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["${workspaceRoot}/node_modules/**/*", "<node_internals>/**/*"],
