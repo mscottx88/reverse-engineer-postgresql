@@ -1,3 +1,8 @@
+/**
+ * This collection of queries are responsible for interrogating the Postgres system catalogs to
+ * produce the DDL required to recreate the source schema objects.
+ */
+
 import * as utils from './utils';
 
 export const PAGE_SIZE = 100 as const;

@@ -1,3 +1,8 @@
+/**
+ * This script contains hand-written DDL for a source schema for the application.
+ * The idea is create a database like normal and then recreate it programmatically over and over.
+ */
+
 SET check_function_bodies = false;
 
 SET search_path = source;

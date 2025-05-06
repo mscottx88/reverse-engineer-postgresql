@@ -1,5 +1,16 @@
 import * as pgFormat from 'pg-format';
 
+/**
+ * This template string function creates a different interface for using pg-format.
+ * To identify a variable for injection, precede it with the colon ":". When used in this way, the
+ * data type of the variable is interrogated to determine whether to inject is as a literal or
+ * string.
+ * To specify exactly how injection should function use ":I" for identifiers, ":s" for strings, and
+ * ":L" for literals.
+ *
+ * @example
+ * sql`SELECT *, :L${someString} FROM :I${someIdentifier} LIMIT :s${someNumber} OFFSET :${100}`
+ */
 export function sql(
   fragments: TemplateStringsArray,
   ...args: (string | number | boolean | object | any[] | Date | null | undefined)[]

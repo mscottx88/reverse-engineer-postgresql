@@ -34,6 +34,6 @@ describe('e2e', () => {
   });
 
   afterAll(async () => {
-    await src.teardownTestSchema();
+    await src.dropTestSchema();
   });
 });

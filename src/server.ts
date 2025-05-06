@@ -1,3 +1,9 @@
+/**
+ * This simple express server simulates a typical bare-bones CRUD API with POST/GET.
+ * More verbs could be added and supported, but the idea is to exercise the database and prove that
+ * a row can be added and retrieved in an end-to-end test.
+ */
+
 import * as db from './db';
 import * as express from 'express';
 import HttpStatus from 'http-status-codes';
@@ -9,6 +15,9 @@ export const BASE_URL = '/api/v1';
 
 const router = express.Router();
 
+/**
+ * Handle a request to create an entity.
+ */
 router.post(
   API_PATH,
   async (
@@ -34,6 +43,9 @@ router.post(
   },
 );
 
+/**
+ * Handle a request to read an entity.
+ */
 router.get(
   `${API_PATH}/:id`,
   async (
@@ -58,17 +70,21 @@ router.get(
   },
 );
 
-export async function app(): Promise<express.Application> {
-  const server = express();
-  server.use(express.json());
-  server.use(BASE_URL, [
-    router,
-    (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-      console.error(err);
-      res
-        .status(err?.statusCode ?? HttpStatus.INTERNAL_SERVER_ERROR)
-        .json({ message: err?.message });
-    },
-  ]);
-  return server;
+/**
+ * Create the express app.
+ *
+ * @returns express.Application
+ */
+export function app(): express.Application {
+  return express()
+    .use(express.json())
+    .use(BASE_URL, [
+      router,
+      (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+        console.error(err);
+        res
+          .status(err?.statusCode ?? HttpStatus.INTERNAL_SERVER_ERROR)
+          .json({ message: err?.message });
+      },
+    ]);
 }
