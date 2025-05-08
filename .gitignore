@@ -101,3 +101,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# output files
+queries.sql
+output.sql
