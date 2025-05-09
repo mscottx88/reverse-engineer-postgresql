@@ -3,10 +3,6 @@
  * The idea is create a database like normal and then recreate it programmatically over and over.
  */
 
-DROP SCHEMA IF EXISTS source CASCADE;
-
-CREATE SCHEMA source;
-
 SET check_function_bodies = false;
 
 SET search_path = source;
